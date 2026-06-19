@@ -1,0 +1,66 @@
+---Write a query that produces the name and number of each salesman and each customer with more than one current order. Put the results in alphabetical order.
+
+SELECT
+    a.customer_id AS cust_ID,
+    a.customer_name AS name
+FROM customers a
+JOIN orders b 
+    ON a.customer_id = b.customer_id
+GROUP BY a.customer_id, a.customer_name
+HAVING COUNT(*) > 1
+
+UNION
+
+SELECT 
+    a.salesman_id AS id,
+    a.salesman_name AS name
+FROM salesman a
+JOIN orders b 
+    ON a.salesman_id = b.salesman_id
+GROUP BY a.salesman_id, a.salesman_name
+HAVING COUNT(*) > 1
+ORDER BY name;
+
+--Write a query to make a report of which salesman produce the largest and smallest orders on each date. Also add a column that shows "highest on" and "lowest on" values.        
+
+-- Highest orders
+SELECT 
+    a.salesman_id, 
+    a.salesman_name, 
+    o.order_no, 
+    'highest on' AS status, 
+    o.order_date, 
+    o.purchase_amount
+FROM salesman a
+JOIN orders o 
+    ON a.salesman_id = o.salesman_id
+JOIN (
+    SELECT order_date, MAX(purchase_amount) AS max_amt
+    FROM orders
+    GROUP BY order_date
+) m 
+    ON o.order_date = m.order_date 
+   AND o.purchase_amount = m.max_amt
+
+UNION
+
+
+SELECT 
+    a.salesman_id, 
+    a.salesman_name, 
+    o.order_no, 
+    'lowest on' AS status, 
+    o.order_date, 
+    o.purchase_amount
+FROM salesman a
+JOIN orders o 
+    ON a.salesman_id = o.salesman_id
+JOIN (
+    SELECT order_date, MIN(purchase_amount) AS min_amt
+    FROM orders
+    GROUP BY order_date
+) n 
+    ON o.order_date = n.order_date 
+   AND o.purchase_amount = n.min_amt
+
+ORDER BY order_date;
