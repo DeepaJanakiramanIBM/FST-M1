@@ -1,0 +1,28 @@
+
+A = input("What is Player 1's name? ")
+B = input("What is Player 2's name? ")
+
+
+A_answer = input(A + ", do you want to choose rock, paper or scissors? ").lower()
+B_answer = input(B + ", do you want to choose rock, paper or scissors? ").lower()
+
+
+if A_answer == B_answer:
+    print("It's a tie!")
+elif A_answer == 'rock':
+    if B_answer == 'scissors':
+        print("Rock wins!")
+    else:
+        print("Paper wins!")
+elif A_answer == 'scissors':
+    if B_answer == 'paper':
+        print("Scissors win!")
+    else:
+        print("Rock wins!")
+elif A_answer == 'paper':
+    if B_answer == 'rock':
+        print("Paper wins!")
+    else:
+        print("Scissors win!")
+else:
+    print("Invalid input! You have not entered rock, paper or scissors, try again.")
